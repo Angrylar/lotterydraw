@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			#rolling-box {
+				position: relative;
+				width: 40rem;
+				height: 40rem;
+				margin: 0 auto;
+				margin-top: 12rem;
+			}
+			#roll{
+				position: relative;
+				width: 40rem;
+				height: 40rem;
+				background: url("img/pointer.png") no-repeat center center;
+				border-radius: 50%;
+				margin-top: 6.5rem;
+				transition: 3s;
+				transform: rotate(0deg);
+				animation-fill-mode : forwards;
+			}
+			#pointer{
+				position: absolute;
+				z-index: 10;
+				left: 50%;
+				top: 50%;
+				width: 20rem;
+				height: 20rem;
+				margin-left: -10rem; 
+				margin-top: -10rem;
+				background: url("img/pointer.png") no-repeat center center;
+				background-size: cover;
+			}
+
+		</style>
+	</head>
+	<body>
+		
+		<div id="rolling-box">
+			<div id="roll">
+				
+			</div>			
+			<div id="pointer">
+				
+			</div>			
+		</div>
+			
+		<script type="text/javascript" src="js/jquery-1.8.3.min.js" ></script>
+		<script>
+		var resetAng = 0;
+		var arr = [{"angle": 0, "reward": "未中奖"}];
+		var clickTime = 0;
+		var ang = {};
+			ang.angle = 0;
+			ang.reward = "0元"
+			arr.push(ang);
+			ang = {};
+			ang.angle = 60;
+			ang.reward = "60元"
+			arr.push(ang);
+			ang = {};
+			ang.angle = 120;
+			ang.reward = "120元"
+			arr.push(ang);
+			ang = {};
+			ang.angle = 180;
+			ang.reward = "180元"
+			arr.push(ang);
+			ang = {};
+			ang.angle = 240;
+			ang.reward = "240元"
+			arr.push(ang);
+			ang = {};
+			ang.angle = 300;
+			ang.reward = "300元"
+			arr.push(ang);
+		
+		function getRand () {
+			return Math.floor(Math.random()*6);
+		}
+		var rand = 0;
+		var isRolling = false;
+		var lastAngle = 0;
+			$("#pointer").on("click",function(){
+				
+				if (!isRolling) {
+					arr[getRand]
+					rand = getRand();
+					var beita = arr[rand].angle - lastAngle;
+
+					// resetAng = resetAng + 角n - 角(n-1) + 3600
+					resetAng = parseInt(parseInt(resetAng) + parseInt(beita) + 3600);
+					console.log(resetAng - 3600)
+					$("#roll").css("transform","rotate(" + parseInt(resetAng) +"deg)");				
+					isRolling = true;	
+					lastAngle = arr[rand].angle;
+				} else {
+					return false;
+				}
+					
+			})
+
+			$("#roll")[0].addEventListener("transitionend",function () {
+				isRolling = false;
+					if (clickTime == 1) {
+						clickTime = 2;
+					} else {
+						clickTime = 1;
+					}				
+					alert(`恭喜您获得${arr[rand].reward}`);
+					// $("#roll").css("transition","0").css("transform","rotate(30deg)");
+			})
+		</script>
+	</body>
+</html>
